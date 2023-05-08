@@ -102,8 +102,8 @@ def startDetect(token):
 						# Ve dong chu canh bao
 						cv2.putText(frame, "WARNING!!!", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
 						if isSendApi == True:
-							print('Send API ')
-							requests.post('http://192.168.1.9:3000/api/sendwarning',headers={'Content-Type':'application/json','Authorization': '{}'.format(token)})
+							print('Send API with token',str(token).strip(),'.')
+							requests.post('https://pbl5-api.onrender.com/api/sendwarning',headers={'Content-Type':'application/json','Authorization': 'Bearer {}'.format(token)})
 							isSendApi  = False
 				else:
 					isSendApi = True
@@ -170,7 +170,7 @@ class Authentication:
             print('password ' + self.password.get())
             username = self.username.get()
             password = self.password.get()
-            response = requests.post('http://192.168.1.9:3000/api/login', data = {'email': username, 'password': password})
+            response = requests.post('https://pbl5-api.onrender.com/api/login', data = {'email': username, 'password': password})
             status = response.status_code
             data = json.loads(response.text)
             token = data['token']
