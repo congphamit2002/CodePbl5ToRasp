@@ -11,7 +11,15 @@ from tkinter import *
 from tkinter import ttk
 import requests
 import json
+import os
+import playsound
 
+# Cau hinh duong dan den file warning.wav
+wav_path = "D:/Hoc_Tap/Ki2_Nam3/PBL5/code/warning.wav"
+
+# Ham phat ra am thanh
+def play_sound(path):
+	os.system('aplay ' + path)
 
 #Ham tinh distance 2 diem
 def e_distance(pA, pB):
@@ -39,11 +47,6 @@ max_sleep_frames = 15
 #Flag canh bao 
 flag = False
 
-# khởi tạo đối số
-# ap = argparse.ArgumentParser()
-# ap.add_argument("-p", "--shape-predictor", required=True,
-# 	help="path to facial landmark predictor")
-# args = vars(ap.parse_args())
 
 def startDetect(token):
 	#khởi tạo dò tìm khuôn mặt và tải model dự đoán
@@ -105,6 +108,11 @@ def startDetect(token):
 							print('Send API with token',str(token).strip(),'.')
 							requests.post('https://pbl5-api.onrender.com/api/sendwarning',headers={'Content-Type':'application/json','Authorization': 'Bearer {}'.format(token)})
 							isSendApi  = False
+							
+							# Tien hanh phat am thanh trong 1 luong rieng
+							t = Thread(target=play_sound, args=(wav_path,))
+							t.daemon = True
+							t.start()
 				else:
 					isSendApi = True
 					sleep_frames = 0
